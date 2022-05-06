@@ -8,6 +8,9 @@ var StringCalculator = function () {
  */
 StringCalculator.prototype.add = function (numbers) {
     var delimiters = '\n,';
+    var negatives = '';
+    var sum;
+    var operands;
 
     // If there are custom delimiters, process them.
     if (numbers.indexOf('//') === 0) {
@@ -16,10 +19,19 @@ StringCalculator.prototype.add = function (numbers) {
     }
 
     // Separate numbers using the delimiters.
-    var operands = numbers.split(new RegExp('[' + delimiters + ']'));
+    operands = numbers.split(new RegExp('[' + delimiters + ']'));
 
-    // Returns the sum of all the numbers.
-    return operands.reduce(function (acc, cur) {
+    // Calculates the sum of all the numbers.
+    sum = operands.reduce(function (acc, cur) {
+        if (Number(cur) < 0) {
+            negatives += ' ' + cur;
+        }
         return acc + Number(cur);
     }, 0);
+
+    if (negatives.length > 0) {
+        throw 'negatives not allowed' + negatives;
+    }
+
+    return sum;
 };
