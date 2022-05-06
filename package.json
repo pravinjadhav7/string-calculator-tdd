@@ -1,0 +1,29 @@
+{
+    "name": "string-calculator",
+    "version": "0.0.1",
+    "description": "A refactoring kata in JS",
+    "main": "SpecRunner.html",
+    "scripts": {
+        "test": "node_modules/.bin/karma start karma.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/pravinjadhav7/string-calculator-tdd.git"
+    },
+    "keywords": [
+        "javascript",
+        "jasmine",
+        "string",
+        "calculator",
+        "tdd"
+    ],
+    "author": "ThibWeb",
+    "license": "BSD-2-Clause",
+    "bugs": {
+        "url": "https://github.com/pravinjadhav7/string-calculator-tdd/issues"
+    },
+    "devDependencies": {
+        "karma": "^6.3.19",
+        "karma-coverage": "^2.2.0"
+    }
+}
