@@ -11,7 +11,12 @@ module.exports = function(config) {
   
       reporters: ['progress', 'coverage'],
       preprocessors: { 'src/StringCalculator.js': ['coverage'] },
-  
+      plugins: [
+        'karma-chrome-launcher',
+        'karma-jasmine',
+        'karma-coverage',
+        'karma-phantomjs-launcher'
+      ],
       singleRun: true
     });
   };

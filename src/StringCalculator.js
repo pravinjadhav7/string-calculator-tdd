@@ -49,23 +49,22 @@ StringCalculator.prototype.add = function (numbers) {
   // Separate numbers using the delimiters.
   var operands = this._parseNumbers(numbers);
   var negatives = '';
-  
-    // Calculates the sum of all the numbers.
-    var sum = operands.reduce(function (acc, num) {
-      var num = Number(num);
-  
-      if (num < 0) {
-        negatives += ' ' + num;
-      }
-  
-      return acc + (num <= 1000 ? num : 0);   
-    
-    }, 0);
 
-    // Negative numbers are reported.
-    if (negatives.length > 0) {
-        throw 'negatives not allowed' + negatives;
+  // Calculates the sum of all the numbers.
+  var sum = operands.reduce(function (acc, num) {
+    num = Number(num);
+
+    if (num < 0) {
+      negatives += ' ' + num;
     }
 
-    return sum;
+    return acc + (num <= 1000 ? num : 0);
+  }, 0);
+
+  // Negative numbers are reported.
+  if (negatives.length > 0) {
+    throw 'negatives not allowed' + negatives;
+  }
+
+  return sum;
 };
