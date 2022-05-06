@@ -3,17 +3,16 @@ var StringCalculator = function () {
 };
 
 StringCalculator.prototype.add = function (numbers) {
-    var delimiters;
+    var delimiters = '\n,';
+
     if (numbers.indexOf('//') === 0) {
-      delimiters = '[\n,' + ';!\)' + ']';
-  
+      delimiters += numbers.substring(2, numbers.indexOf('\n'));
       numbers = numbers.substring(numbers.indexOf('\n'));
     }
-    else {
-      delimiters = '[\n,' + ';!\)' + ']';
-    }
   
-    var operands = numbers.split(new RegExp(delimiters));
+    var operands = numbers.split(new RegExp('[' + delimiters + ']'));
+
+    
      return operands.reduce(function (acc, cur) {
         return acc + Number(cur);
     }, 0);
