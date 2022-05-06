@@ -1,31 +1,54 @@
-var StringCalculator = function () {
-    this.defaultDelimiters = '\n|,';
-    this.maximumNumber = 1000;
-  };
-  
-  /*
-   * Parses the string to return an array of operands.
-   */
-  StringCalculator.prototype.parseNumbers = function (str) {
-    var delimiters = this.defaultDelimiters;
-  
-    // If there are custom delimiters, process them.
-    if (str.indexOf('//') === 0) {
-      delimiters += '|' + str.substring(2, str.indexOf('\n'));
-      str = str.substring(str.indexOf('\n'));
-    }
-  
-    return str.split(new RegExp('(' + delimiters + ')'));
+/*
+ * The Calculator object.
+ */
+var StringCalculator = function (delimiters) {
+  this.defaultDelimiters = delimiters ? delimiters : '\n|,';
+};
+
+/*
+ * Useful when dynamically generating regular expressions.
+ */
+String.prototype.escapeRegExp = function () {
+  return this.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
+};
+
+StringCalculator.prototype._parseDelimiters = function (custom) {
+  var delimiters = '|' + custom;
+
+  // Override default value if we are in a multiple-delimiter case.
+  if (custom.indexOf('[') === 0) {
+    custom = custom.split('[').slice(1);
+    // Retrieve all delimiters and add them to the regex.
+    delimiters = custom.reduce(function (acc, d) {
+      return acc += '|' + d.substring(0, d.length - 1).escapeRegExp();
+    }, '');
   }
-  
-  /*
-   * The add method, takes a string of numbers.
-   */
-  StringCalculator.prototype.add = function (str) {
-    var self = this;
-    // Separate numbers using the delimiters.
-    var operands = self.parseNumbers(str);
-    var negatives = '';
+
+  return delimiters;
+};
+
+/*
+ * Parses the string to return an array of operands.
+ */
+StringCalculator.prototype._parseNumbers = function (str) {
+  var delimiters = this.defaultDelimiters;
+
+  // If there are custom delimiters, process them.
+  if (str.indexOf('//') === 0) {
+    delimiters += this._parseDelimiters(str.substring(2, str.indexOf('\n')));
+    str = str.substring(str.indexOf('\n'));
+  }
+
+  return str.split(new RegExp('(' + delimiters + ')'));
+};
+
+/*
+ * The add method, takes a string of numbers.
+ */
+StringCalculator.prototype.add = function (numbers) {
+  // Separate numbers using the delimiters.
+  var operands = this._parseNumbers(numbers);
+  var negatives = '';
   
     // Calculates the sum of all the numbers.
     var sum = operands.reduce(function (acc, num) {
@@ -33,8 +56,7 @@ var StringCalculator = function () {
   
       if (num < 0) negatives += ' ' + num;
   
-      return acc + (num < self.maximumNumber ? num : 0);
-    }, 0);
+      return acc + (num < 1000 ? num : 0);    }, 0);
 
     // Negative numbers are reported.
     if (negatives.length > 0) {
