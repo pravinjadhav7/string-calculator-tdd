@@ -26,8 +26,12 @@ describe('String Calculator', function () {
 
     it('handles delimiters of any length', function () {
         expect(calc.add('//[***]\n1***2***3')).toEqual(6);
-        expect(calc.add('//[,,,,]\n1,,,,2,,,,90,,,,100,,,,1000,,,,10000,,,,100000')).toEqual(193);
+        expect(calc.add('//[,!,]\n1,!,2,!,90,!,100,!,1000,!,10000,!,100000')).toEqual(193);
     });
+  
+    it('handles multiple custom delimiters', function () {
+      expect(calc.add('//[*][%]\n1*2%3')).toEqual(6);
+      expect(calc.add('//[!!][^^]\n1!!2!!90!!100^^1000!!10000!!100000')).toEqual(193);    });
 
     it('supports number strings delimited w/ newlines', function () {
         expect(calc.add('133\n36,1,3,5')).toEqual(178);
